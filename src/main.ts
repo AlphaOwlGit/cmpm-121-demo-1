@@ -10,11 +10,23 @@ header.innerHTML = gameName;
 app.append(header);
 
 let counter = 0;
+let incTrue = false;
 const button = document.createElement("button");
 button.innerHTML = "Click this to make Christmas come faster 🎅";
 button.addEventListener("click", () => {
   counter++;
+  if (!incTrue) {
+    setInterval(increase, 1000);
+    incTrue = true;
+  }
   button.innerHTML =
     "You want Christmas to come faster " + counter + " times 🎅";
 });
+
+function increase() {
+  counter++;
+  button.innerHTML =
+    "You want Christmas to come faster " + counter + " times 🎅";
+}
+
 app.append(button);
