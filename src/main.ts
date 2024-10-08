@@ -11,22 +11,29 @@ app.append(header);
 
 let counter = 0;
 let incTrue = false;
+let lastTime = performance.now();
 const button = document.createElement("button");
 button.innerHTML = "Click this to make Christmas come faster 🎅";
 button.addEventListener("click", () => {
   counter++;
   if (!incTrue) {
-    setInterval(increase, 1000);
+    requestAnimationFrame(animate);
     incTrue = true;
   }
   button.innerHTML =
-    "You want Christmas to come faster " + counter + " times 🎅";
+    counter + " seconds have passed since you said you wanted Christmas to come faster 🎅";
 });
 
-function increase() {
-  counter++;
+function animate() {
+  const currentTime = performance.now();
+  const elapsed = currentTime - lastTime;
+  lastTime = currentTime;
+  const increaseAmount = elapsed / 1000;
+  counter += increaseAmount;
+
+  requestAnimationFrame(animate);
   button.innerHTML =
-    "You want Christmas to come faster " + counter + " times 🎅";
+    counter + " seconds have passed since you said you wanted Christmas to come faster 🎅";
 }
 
 app.append(button);
