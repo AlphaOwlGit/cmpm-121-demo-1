@@ -21,7 +21,8 @@ button.addEventListener("click", () => {
     incTrue = true;
   }
   button.innerHTML =
-    counter + " seconds have passed since you said you wanted Christmas to come faster 🎅";
+    counter +
+    " seconds have passed since you said you wanted Christmas to come faster 🎅";
 });
 
 function animate() {
@@ -33,7 +34,8 @@ function animate() {
 
   requestAnimationFrame(animate);
   button.innerHTML =
-    counter + " seconds have passed since you said you wanted Christmas to come faster 🎅";
+    counter +
+    " seconds have passed since you said you wanted Christmas to come faster 🎅";
 }
 
 app.append(button);
