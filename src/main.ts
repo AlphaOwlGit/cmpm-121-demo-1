@@ -26,7 +26,12 @@ class UpgradeItem {
   description: string;
   button: HTMLButtonElement;
 
-  constructor(name: string, price: number, growthRate: number, description: string) {
+  constructor(
+    name: string,
+    price: number,
+    growthRate: number,
+    description: string,
+  ) {
     this.name = name;
     this.price = price;
     this.growthRate = growthRate;
@@ -74,11 +79,31 @@ mainButton.addEventListener("click", () => {
 app.append(mainButton);
 
 const availableItems: UpgradeItem[] = [
-  new UpgradeItem("Manual Elf Labor 🧝", 10, 0.1, "What's better than using your already-working indentured employees?"),
-  new UpgradeItem("Elf Carts 🛒🧝", 100, 2.0, "The key to their work success? DOTA 2 Techies guides."),
+  new UpgradeItem(
+    "Manual Elf Labor 🧝",
+    10,
+    0.1,
+    "What's better than using your already-working indentured employees?",
+  ),
+  new UpgradeItem(
+    "Elf Carts 🛒🧝",
+    100,
+    2.0,
+    "The key to their work success? DOTA 2 Techies guides.",
+  ),
   new UpgradeItem("Racing Reindeers 🦌", 500, 10, "Runs on carrots-on-sticks!"),
-  new UpgradeItem("Repurposed Workshops 🧱", 1000, 25, "Turning the toy build stage into a stock exchange."),
-  new UpgradeItem("Snowman Special Deliveries ☃️", 2500, 50, "If you use Frosty's Fast Service, it'll cost an additional $4.99."),
+  new UpgradeItem(
+    "Repurposed Workshops 🧱",
+    1000,
+    25,
+    "Turning the toy build stage into a stock exchange.",
+  ),
+  new UpgradeItem(
+    "Snowman Special Deliveries ☃️",
+    2500,
+    50,
+    "If you use Frosty's Fast Service, it'll cost an additional $4.99.",
+  ),
 ];
 
 const statusText = document.createElement("div");
