@@ -20,14 +20,14 @@ let lastTime = performance.now();
 
 class UpgradeItem {
   name: string;
-  cost: number;
+  price: number;
   growthRate: number;
   count: number;
   button: HTMLButtonElement;
 
-  constructor(name: string, cost: number, growthRate: number) {
+  constructor(name: string, price: number, growthRate: number) {
     this.name = name;
-    this.cost = cost;
+    this.price = price;
     this.growthRate = growthRate;
     this.count = 0;
     this.button = this.createButton();
@@ -42,18 +42,18 @@ class UpgradeItem {
   }
 
   purchase() {
-    if (counter >= this.cost) {
-      counter -= this.cost;
+    if (counter >= this.price) {
+      counter -= this.price;
       growthRate += this.growthRate;
       this.count++;
-      this.cost *= 1.15;
+      this.price *= 1.15;
       this.button.innerHTML = this.displayItemCost();
       this.updateStatus();
     }
   }
 
   displayItemCost(): string {
-    return `Buy ${this.name} (${this.cost.toFixed(2)} Santa Bucks)`;
+    return `Buy ${this.name} (${this.price.toFixed(2)} Santa Bucks)`;
   }
 
   updateStatus() {
@@ -62,7 +62,7 @@ class UpgradeItem {
   }
 }
 
-const items = [
+const availableItems : UpgradeItem[] = [
   new UpgradeItem("Manual Elf Labor 🧝", 10, 0.1),
   new UpgradeItem("Elf Carts 🛒🧝", 100, 2.0),
   new UpgradeItem("Racing Reindeer 🦌", 1000, 50),
@@ -85,7 +85,7 @@ function getButtonText() {
 
 function displayStatus() {
   const growthText = `Current Growth Rate: ${growthRate.toFixed(2)} Santa Bucks/sec`;
-  const itemCounts = items
+  const itemCounts = availableItems
     .map((item) => `${item.name}: ${item.count}`)
     .join(", ");
   statusText.innerHTML = `${growthText}<br><br>Items purchased: ${itemCounts}`;
@@ -101,8 +101,8 @@ function animate() {
 }
 
 function checkUpgradeStatus() {
-  items.forEach((item) => {
-    item.button.disabled = counter < item.cost;
+  availableItems.forEach((item) => {
+    item.button.disabled = counter < item.price;
   });
 }
 
