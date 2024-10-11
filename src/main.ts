@@ -11,35 +11,77 @@ app.append(header);
 
 const text = document.createElement("h2");
 text.innerHTML =
-  "For this upcoming Christmas. Santa Claus wants to introduce a new form of present for the kids around the world: Santa Bucks. But he needs help get his new enterprise off the ground!";
+  "For this upcoming Christmas, Santa Claus wants to introduce a new form of present for the kids around the world: Santa Bucks. But he needs help get his new enterprise off the ground!";
 app.append(text);
 
 let counter = 0;
 let growthRate = 0;
 let lastTime = performance.now();
-const button = document.createElement("button");
-button.innerHTML = "Start by clicking to generate a Santa Buck 🎅";
-button.addEventListener("click", () => {
-  counter++;
-  button.innerHTML = counter.toFixed(4) + " Santa Bucks has been produced 🎅";
-  checkUpgradeStatus();
-});
-app.append(button);
 
-const upgrade = document.createElement("button");
-upgrade.innerHTML = "Manual Elf Labor 🧝";
-upgrade.addEventListener("click", () => {
-  if (counter >= 10) {
-    counter -= 10;
-    growthRate += 1;
-    checkUpgradeStatus();
+class UpgradeItem {
+  name: string;
+  cost: number;
+  growthRate: number;
+  count: number;
+  button: HTMLButtonElement;
+
+  constructor(name: string, cost: number, growthRate: number) {
+    this.name = name;
+    this.cost = cost;
+    this.growthRate = growthRate;
+    this.count = 0;
+    this.button = this.createButton();
   }
 
-  button.innerHTML = counter.toFixed(4) + " Santa Bucks has been produced 🎅";
-});
-app.append(upgrade);
+  createButton(): HTMLButtonElement {
+    const button = document.createElement("button");
+    button.innerHTML = `Buy ${this.name} (${this.cost} Santa Bucks)`;
+    button.addEventListener("click", () => this.purchase());
+    app.append(button);
+    return button;
+  }
 
-requestAnimationFrame(animate);
+  purchase() {
+    if (counter >= this.cost) {
+      counter -= this.cost;
+      growthRate += this.growthRate;
+      this.count++;
+      this.updateStatus();
+    }
+  }
+
+  updateStatus() {
+    checkUpgradeStatus();
+    displayStatus();
+  }
+}
+
+const items = [
+  new UpgradeItem('Manual Elf Labor 🧝', 10, 0.1),
+  new UpgradeItem('Elf Carts 🛒🧝', 100, 2.0),
+  new UpgradeItem('Racing Reindeer 🦌', 1000, 50)
+];
+
+const mainButton = document.createElement("button");
+mainButton.innerHTML = "Start by clicking to generate a Santa Buck 🎅";
+mainButton.addEventListener("click", () => {
+  counter++;
+  mainButton.innerHTML = getButtonText();
+});
+app.append(mainButton);
+
+const statusText = document.createElement("div");
+app.append(statusText);
+
+function getButtonText() {
+  return `${counter.toFixed(4)} Santa Bucks have been produced 🎅`;
+}
+
+function displayStatus() {
+  const growthText = `Current Growth Rate: ${growthRate.toFixed(2)} Santa Bucks/sec`;
+  const itemCounts = items.map(item => `${item.name}: ${item.count}`).join(", ");
+  statusText.innerHTML = `${growthText}<br><br>Items purchased: ${itemCounts}`;
+}
 
 function animate() {
   const currentTime = performance.now();
@@ -47,15 +89,18 @@ function animate() {
   lastTime = currentTime;
   upgradeAutoGrowth(elapsed);
   checkUpgradeStatus();
-
   requestAnimationFrame(animate);
 }
 
 function checkUpgradeStatus() {
-  upgrade.disabled = counter < 10;
+  items.forEach(item => {
+    item.button.disabled = counter < item.cost;
+  })
 }
 
 function upgradeAutoGrowth(elapsed: number) {
   counter += (growthRate * elapsed) / 1000;
-  button.innerHTML = counter.toFixed(4) + " Santa Bucks has been produced 🎅";
+  mainButton.innerHTML = getButtonText();
 }
+
+requestAnimationFrame(animate);
