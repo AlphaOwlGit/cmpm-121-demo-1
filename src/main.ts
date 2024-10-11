@@ -23,19 +23,22 @@ class UpgradeItem {
   price: number;
   growthRate: number;
   count: number;
+  description: string;
   button: HTMLButtonElement;
 
-  constructor(name: string, price: number, growthRate: number) {
+  constructor(name: string, price: number, growthRate: number, description: string) {
     this.name = name;
     this.price = price;
     this.growthRate = growthRate;
     this.count = 0;
+    this.description = description;
     this.button = this.createButton();
   }
 
   createButton(): HTMLButtonElement {
     const button = document.createElement("button");
     button.innerHTML = this.displayItemCost();
+    button.title = this.description;
     button.addEventListener("click", () => this.purchase());
     app.append(button);
     return button;
@@ -62,12 +65,6 @@ class UpgradeItem {
   }
 }
 
-const availableItems: UpgradeItem[] = [
-  new UpgradeItem("Manual Elf Labor 🧝", 10, 0.1),
-  new UpgradeItem("Elf Carts 🛒🧝", 100, 2.0),
-  new UpgradeItem("Racing Reindeer 🦌", 1000, 50),
-];
-
 const mainButton = document.createElement("button");
 mainButton.innerHTML = "Start by clicking to generate a Santa Buck 🎅";
 mainButton.addEventListener("click", () => {
@@ -75,6 +72,14 @@ mainButton.addEventListener("click", () => {
   mainButton.innerHTML = getButtonText();
 });
 app.append(mainButton);
+
+const availableItems: UpgradeItem[] = [
+  new UpgradeItem("Manual Elf Labor 🧝", 10, 0.1, "What's better than using your already-working indentured employees?"),
+  new UpgradeItem("Elf Carts 🛒🧝", 100, 2.0, "The key to their work success? DOTA 2 Techies guides."),
+  new UpgradeItem("Racing Reindeers 🦌", 500, 10, "Runs on carrots-on-sticks!"),
+  new UpgradeItem("Repurposed Workshops 🧱", 1000, 25, "Turning the toy build stage into a stock exchange."),
+  new UpgradeItem("Snowman Special Deliveries ☃️", 2500, 50, "If you use Frosty's Fast Service, it'll cost an additional $4.99."),
+];
 
 const statusText = document.createElement("div");
 app.append(statusText);
