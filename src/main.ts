@@ -62,7 +62,7 @@ class UpgradeItem {
   }
 }
 
-const availableItems : UpgradeItem[] = [
+const availableItems: UpgradeItem[] = [
   new UpgradeItem("Manual Elf Labor 🧝", 10, 0.1),
   new UpgradeItem("Elf Carts 🛒🧝", 100, 2.0),
   new UpgradeItem("Racing Reindeer 🦌", 1000, 50),
