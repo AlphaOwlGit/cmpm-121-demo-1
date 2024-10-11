@@ -57,9 +57,9 @@ class UpgradeItem {
 }
 
 const items = [
-  new UpgradeItem('Manual Elf Labor 🧝', 10, 0.1),
-  new UpgradeItem('Elf Carts 🛒🧝', 100, 2.0),
-  new UpgradeItem('Racing Reindeer 🦌', 1000, 50)
+  new UpgradeItem("Manual Elf Labor 🧝", 10, 0.1),
+  new UpgradeItem("Elf Carts 🛒🧝", 100, 2.0),
+  new UpgradeItem("Racing Reindeer 🦌", 1000, 50),
 ];
 
 const mainButton = document.createElement("button");
@@ -79,7 +79,9 @@ function getButtonText() {
 
 function displayStatus() {
   const growthText = `Current Growth Rate: ${growthRate.toFixed(2)} Santa Bucks/sec`;
-  const itemCounts = items.map(item => `${item.name}: ${item.count}`).join(", ");
+  const itemCounts = items
+    .map((item) => `${item.name}: ${item.count}`)
+    .join(", ");
   statusText.innerHTML = `${growthText}<br><br>Items purchased: ${itemCounts}`;
 }
 
@@ -93,9 +95,9 @@ function animate() {
 }
 
 function checkUpgradeStatus() {
-  items.forEach(item => {
+  items.forEach((item) => {
     item.button.disabled = counter < item.cost;
-  })
+  });
 }
 
 function upgradeAutoGrowth(elapsed: number) {
