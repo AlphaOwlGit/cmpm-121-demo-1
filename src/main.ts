@@ -52,7 +52,7 @@ class UpgradeItem {
     }
   }
 
-  displayItemCost() : string {
+  displayItemCost(): string {
     return `Buy ${this.name} (${this.cost.toFixed(2)} Santa Bucks)`;
   }
 
