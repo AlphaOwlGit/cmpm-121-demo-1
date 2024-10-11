@@ -35,7 +35,7 @@ class UpgradeItem {
 
   createButton(): HTMLButtonElement {
     const button = document.createElement("button");
-    button.innerHTML = `Buy ${this.name} (${this.cost} Santa Bucks)`;
+    button.innerHTML = this.displayItemCost();
     button.addEventListener("click", () => this.purchase());
     app.append(button);
     return button;
@@ -46,8 +46,14 @@ class UpgradeItem {
       counter -= this.cost;
       growthRate += this.growthRate;
       this.count++;
+      this.cost *= 1.15;
+      this.button.innerHTML = this.displayItemCost();
       this.updateStatus();
     }
+  }
+
+  displayItemCost() : string {
+    return `Buy ${this.name} (${this.cost.toFixed(2)} Santa Bucks)`;
   }
 
   updateStatus() {
