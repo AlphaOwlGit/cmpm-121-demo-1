@@ -14,14 +14,22 @@ text.innerHTML =
   "For this upcoming Christmas, Santa Claus wants to introduce a new form of present for the kids around the world: Santa Bucks. But he needs help get his new enterprise off the ground!";
 app.append(text);
 
-let counter = 0;
-let growthRate = 0;
-let lastTime = performance.now();
+let santaBuckCounter: number = 0;
+let buckGrowthRate: number = 0;
+let lastTime:number = performance.now();
 
-class UpgradeItem {
+const mainButton = document.createElement("button");
+mainButton.innerHTML = "Start by clicking to generate a Santa Buck 🎅";
+mainButton.addEventListener("click", () => {
+  santaBuckCounter++;
+  mainButton.innerHTML = getButtonText();
+});
+app.append(mainButton);
+
+class ItemUpgrade {
   name: string;
   price: number;
-  growthRate: number;
+  buckGrowthRate: number;
   count: number;
   description: string;
   button: HTMLButtonElement;
@@ -29,12 +37,12 @@ class UpgradeItem {
   constructor(
     name: string,
     price: number,
-    growthRate: number,
+    buckGrowthRate: number,
     description: string,
   ) {
     this.name = name;
     this.price = price;
-    this.growthRate = growthRate;
+    this.buckGrowthRate = buckGrowthRate;
     this.count = 0;
     this.description = description;
     this.button = this.createButton();
@@ -50,9 +58,9 @@ class UpgradeItem {
   }
 
   purchase() {
-    if (counter >= this.price) {
-      counter -= this.price;
-      growthRate += this.growthRate;
+    if (santaBuckCounter >= this.price) {
+      santaBuckCounter -= this.price;
+      buckGrowthRate += this.buckGrowthRate;
       this.count++;
       this.price *= 1.15;
       this.button.innerHTML = this.displayItemCost();
@@ -70,35 +78,27 @@ class UpgradeItem {
   }
 }
 
-const mainButton = document.createElement("button");
-mainButton.innerHTML = "Start by clicking to generate a Santa Buck 🎅";
-mainButton.addEventListener("click", () => {
-  counter++;
-  mainButton.innerHTML = getButtonText();
-});
-app.append(mainButton);
-
-const availableItems: UpgradeItem[] = [
-  new UpgradeItem(
+const availableItems: ItemUpgrade[] = [
+  new ItemUpgrade(
     "Manual Elf Labor 🧝",
     10,
     0.1,
     "What's better than using your already-working indentured employees?",
   ),
-  new UpgradeItem(
+  new ItemUpgrade(
     "Elf Carts 🛒🧝",
     100,
     2.0,
     "The key to their work success? DOTA 2 Techies guides.",
   ),
-  new UpgradeItem("Racing Reindeers 🦌", 500, 10, "Runs on carrots-on-sticks!"),
-  new UpgradeItem(
+  new ItemUpgrade("Racing Reindeers 🦌", 500, 10, "Runs on carrots-on-sticks!"),
+  new ItemUpgrade(
     "Repurposed Workshops 🧱",
     1000,
     25,
     "Turning the toy build stage into a stock exchange.",
   ),
-  new UpgradeItem(
+  new ItemUpgrade(
     "Snowman Special Deliveries ☃️",
     2500,
     50,
@@ -109,16 +109,27 @@ const availableItems: UpgradeItem[] = [
 const statusText = document.createElement("div");
 app.append(statusText);
 
-function getButtonText() {
-  return `${counter.toFixed(4)} Santa Bucks have been produced 🎅`;
-}
-
 function displayStatus() {
-  const growthText = `Current Growth Rate: ${growthRate.toFixed(2)} Santa Bucks/sec`;
+  const growthText = `Current Growth Rate: ${buckGrowthRate.toFixed(2)} Santa Bucks/sec`;
   const itemCounts = availableItems
     .map((item) => `${item.name}: ${item.count}`)
     .join(", ");
   statusText.innerHTML = `${growthText}<br><br>Items purchased: ${itemCounts}`;
+}
+
+function checkUpgradeStatus() {
+  availableItems.forEach((item) => {
+    item.button.disabled = santaBuckCounter < item.price;
+  });
+}
+
+function upgradeAutoGrowth(elapsed: number) {
+  santaBuckCounter += (buckGrowthRate * elapsed) / 1000;
+  mainButton.innerHTML = getButtonText();
+}
+
+function getButtonText() {
+  return `${santaBuckCounter.toFixed(4)} Santa Bucks have been produced 🎅`;
 }
 
 function animate() {
@@ -128,17 +139,6 @@ function animate() {
   upgradeAutoGrowth(elapsed);
   checkUpgradeStatus();
   requestAnimationFrame(animate);
-}
-
-function checkUpgradeStatus() {
-  availableItems.forEach((item) => {
-    item.button.disabled = counter < item.price;
-  });
-}
-
-function upgradeAutoGrowth(elapsed: number) {
-  counter += (growthRate * elapsed) / 1000;
-  mainButton.innerHTML = getButtonText();
 }
 
 requestAnimationFrame(animate);
