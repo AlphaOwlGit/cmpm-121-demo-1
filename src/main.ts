@@ -16,7 +16,7 @@ app.append(text);
 
 let santaBuckCounter: number = 0;
 let buckGrowthRate: number = 0;
-let lastTime:number = performance.now();
+let lastTime: number = performance.now();
 
 const mainButton = document.createElement("button");
 mainButton.innerHTML = "Start by clicking to generate a Santa Buck 🎅";
