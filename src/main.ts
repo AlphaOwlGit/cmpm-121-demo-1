@@ -3,6 +3,8 @@ import "./style.css";
 const app: HTMLDivElement = document.querySelector("#app")!;
 
 const gameName = "Santanomics";
+const PRICE_MULTIPLIER = 1.15;
+
 document.title = gameName;
 
 const header = document.createElement("h1");
@@ -14,17 +16,24 @@ text.innerHTML =
   "For this upcoming Christmas, Santa Claus wants to introduce a new form of present for the kids around the world: Santa Bucks. But he needs help get his new enterprise off the ground!";
 app.append(text);
 
+const itemContainer = document.querySelector<HTMLDivElement>("#item-container")!;
+
 let santaBuckCounter: number = 0;
 let buckGrowthRate: number = 0;
 let lastTime: number = performance.now();
 
+const produceText = document.createElement("h3");
+produceText.innerHTML =
+  getButtonText();
+app.append(produceText);
+
 const mainButton = document.createElement("button");
-mainButton.innerHTML = "Start by clicking to generate a Santa Buck 🎅";
+mainButton.innerHTML = "🎅";
+mainButton.classList.add('main-button');
 mainButton.addEventListener("click", () => {
   santaBuckCounter++;
-  mainButton.innerHTML = getButtonText();
 });
-app.append(mainButton);
+app.appendChild(mainButton);
 
 class ItemUpgrade {
   name: string;
@@ -52,8 +61,9 @@ class ItemUpgrade {
     const button = document.createElement("button");
     button.innerHTML = this.displayItemCost();
     button.title = this.description;
+    button.classList.add("item-upgrade");
     button.addEventListener("click", () => this.purchase());
-    app.append(button);
+    itemContainer.appendChild(button);
     return button;
   }
 
@@ -62,7 +72,7 @@ class ItemUpgrade {
       santaBuckCounter -= this.price;
       buckGrowthRate += this.buckGrowthRate;
       this.count++;
-      this.price *= 1.15;
+      this.price *= PRICE_MULTIPLIER;
       this.button.innerHTML = this.displayItemCost();
       this.updateStatus();
     }
@@ -79,31 +89,11 @@ class ItemUpgrade {
 }
 
 const availableItems: ItemUpgrade[] = [
-  new ItemUpgrade(
-    "Manual Elf Labor 🧝",
-    10,
-    0.1,
-    "What's better than using your already-working indentured employees?",
-  ),
-  new ItemUpgrade(
-    "Elf Carts 🛒🧝",
-    100,
-    2.0,
-    "The key to their work success? DOTA 2 Techies guides.",
-  ),
+  new ItemUpgrade("Manual Elf Labor 🧝", 10, 0.1, "What's better than using your already-working indentured employees?"),
+  new ItemUpgrade("Elf Carts 🛒🧝", 100, 2.0, "The key to their work success? DOTA 2 Techies guides."),
   new ItemUpgrade("Racing Reindeers 🦌", 500, 10, "Runs on carrots-on-sticks!"),
-  new ItemUpgrade(
-    "Repurposed Workshops 🧱",
-    1000,
-    25,
-    "Turning the toy build stage into a stock exchange.",
-  ),
-  new ItemUpgrade(
-    "Snowman Special Deliveries ☃️",
-    2500,
-    50,
-    "If you use Frosty's Fast Service, it'll cost an additional $4.99.",
-  ),
+  new ItemUpgrade("Repurposed Workshops 🧱", 1000, 25, "Turning the toy build stage into a stock exchange."),
+  new ItemUpgrade("Snowman Special Deliveries ☃️", 2500, 50, "If you use Frosty's Fast Service, it'll cost an additional $4.99."),
 ];
 
 const statusText = document.createElement("div");
@@ -125,11 +115,11 @@ function checkUpgradeStatus() {
 
 function upgradeAutoGrowth(elapsed: number) {
   santaBuckCounter += (buckGrowthRate * elapsed) / 1000;
-  mainButton.innerHTML = getButtonText();
+  produceText.innerHTML = getButtonText();
 }
 
 function getButtonText() {
-  return `${santaBuckCounter.toFixed(4)} Santa Bucks have been produced 🎅`;
+  return `Santa Bucks produced: ${santaBuckCounter.toFixed(4)}`;
 }
 
 function animate() {

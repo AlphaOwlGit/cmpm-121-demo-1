@@ -5,7 +5,7 @@
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  background-color: #d63d3d;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -37,10 +37,14 @@ h1 {
 }
 
 #app {
+  border-radius: 32px;
+  border: 2px solid transparent;
   max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+  margin: 30 auto;
+  padding: 0.6em 1.2em;
   text-align: center;
+  background-color: #a0a0a0;
+  transition: border-color 0.25s;
 }
 
 button {
@@ -50,7 +54,7 @@ button {
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
+  background-color: #266e44;
   cursor: pointer;
   transition: border-color 0.25s;
 }
@@ -60,6 +64,48 @@ button:hover {
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
+}
+
+.main-button {
+  font-size: 10em;
+  padding: 10px 20px;
+  border-radius: 8px;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+#item-container {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.item-upgrade {
+  margin: 5px;
+  padding: 0.6em 1.2em;
+  border: 1px solid white;
+  background-color: rgb(25, 114, 65);
+  cursor: pointer;
+}
+
+.item-upgrade p {
+  margin: 0;
+}
+
+#background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-image: url("/src/game-background.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  z-index: -1;
 }
 
 @media (prefers-color-scheme: light) {
